@@ -34,3 +34,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Assets/bak_links.txt
+Assets/bak_info.txt
+Assets/bak_info.txt.meta
+Assets/bak_links.txt.meta
