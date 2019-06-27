@@ -9,17 +9,25 @@ public class LookAtRaycast : MonoBehaviour
     public GameObject topButton;
     public GameObject bottomButton;
     public GameObject centerButton;
+    public GameObject mainCamera;
     ScreenButtonController left;
     ScreenButtonController right;
     ScreenButtonController top;
     ScreenButtonController bottom;
     ScreenButtonController center;
+    public GameObject crossHair;
+    public LayerMask mask;
+    int ignoreMask;
 
     string last = "";
     
 
     void Start()
     {
+
+        // Invert the mask so that the selected layer will be ignored
+        ignoreMask =~ mask;
+
         left = leftButton.GetComponent<ScreenButtonController>();
         right = rightButton.GetComponent<ScreenButtonController>();
         top = topButton.GetComponent<ScreenButtonController>();
@@ -33,7 +41,19 @@ public class LookAtRaycast : MonoBehaviour
 
 
         // Raycast to determine what the player is looking at (transform name)
-        if (Physics.Raycast (transform.position, transform.forward, out hit)) {
+        if (Physics.Raycast (mainCamera.transform.position, mainCamera.transform.forward, out hit, 100000, ignoreMask)) {
+
+            Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 100000, Color.red);//TODO comment out this once VR is tested
+
+            // Vector from camera's position to raycast hit location
+            Vector3 a = mainCamera.transform.rotation * Vector3.forward * hit.distance;
+            // Vector form raycast hit location to a little in front of the raycast hit location
+            // 0.006 should be enough to avoid clipping with buttons on screen object
+            Vector3 b = hit.transform.rotation * Vector3.back * 0.006f;
+
+            // Make the crosshair appear at the position the player is looking at and rotaed same way as the surface
+            crossHair.transform.position = mainCamera.transform.position + a + b;
+            crossHair.transform.rotation = hit.transform.rotation;
 
             string name = hit.transform.name;            
 
