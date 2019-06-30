@@ -1878,6 +1878,7 @@ GameObject:
   - component: {fileID: 763305676}
   - component: {fileID: 763305675}
   - component: {fileID: 763305674}
+  - component: {fileID: 763305678}
   m_Layer: 2
   m_Name: CrossHair
   m_TagString: Untagged
@@ -1959,6 +1960,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &763305678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763305673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0ad5e38f1a7bbb4483702319c22ceff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftButton: {fileID: 1932778300}
+  rightButton: {fileID: 330330518}
+  topButton: {fileID: 745504739}
+  bottomButton: {fileID: 297620132}
+  centerButton: {fileID: 190510915}
+  mainCamera: {fileID: 1496859878}
+  mask:
+    serializedVersion: 2
+    m_Bits: 4
 --- !u!1 &811942870
 GameObject:
   m_ObjectHideFlags: 0
@@ -2901,7 +2923,6 @@ GameObject:
   - component: {fileID: 1633235509}
   - component: {fileID: 1633235508}
   - component: {fileID: 1633235512}
-  - component: {fileID: 1633235513}
   m_Layer: 0
   m_Name: Screen
   m_TagString: Untagged
@@ -3003,32 +3024,10 @@ MonoBehaviour:
   uiTimer: {fileID: 815357328}
   screenTimer: {fileID: 12678165}
   useScreenTimer: 1
-  experimentName: search
+  experimentName: tracking
   experimentMode: 3
   useTimer: 1
   maxTrials: 5
---- !u!114 &1633235513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1633235507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0ad5e38f1a7bbb4483702319c22ceff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftButton: {fileID: 1932778300}
-  rightButton: {fileID: 330330518}
-  topButton: {fileID: 745504739}
-  bottomButton: {fileID: 297620132}
-  centerButton: {fileID: 190510915}
-  mainCamera: {fileID: 1496859878}
-  crossHair: {fileID: 763305673}
-  mask:
-    serializedVersion: 2
-    m_Bits: 4
 --- !u!1001 &1634377456
 PrefabInstance:
   m_ObjectHideFlags: 0

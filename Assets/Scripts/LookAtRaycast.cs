@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Attached to Crosshair GameObject
 public class LookAtRaycast : MonoBehaviour
 {
     public GameObject leftButton;
@@ -15,7 +16,6 @@ public class LookAtRaycast : MonoBehaviour
     ScreenButtonController top;
     ScreenButtonController bottom;
     ScreenButtonController center;
-    public GameObject crossHair;
     public LayerMask mask;
     int ignoreMask;
 
@@ -52,8 +52,8 @@ public class LookAtRaycast : MonoBehaviour
             Vector3 b = hit.transform.rotation * Vector3.back * 0.006f;
 
             // Make the crosshair appear at the position the player is looking at and rotaed same way as the surface
-            crossHair.transform.position = mainCamera.transform.position + a + b;
-            crossHair.transform.rotation = hit.transform.rotation;
+            transform.position = mainCamera.transform.position + a + b;
+            transform.rotation = hit.transform.rotation;
 
             string name = hit.transform.name;            
 
