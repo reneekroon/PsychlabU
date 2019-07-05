@@ -3059,7 +3059,7 @@ MonoBehaviour:
   uiTimer: {fileID: 815357328}
   screenTimer: {fileID: 12678165}
   useScreenTimer: 1
-  experimentName: recognition
+  experimentName: tracking
   experimentMode: 3
   useTimer: 0
   maxTrials: 5

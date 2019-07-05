@@ -33,6 +33,7 @@ public class LookAtRaycast : MonoBehaviour
         top = topButton.GetComponent<ScreenButtonController>();
         bottom = bottomButton.GetComponent<ScreenButtonController>();
         center = centerButton.GetComponent<ScreenButtonController>();
+
     }
 
     void Update()
@@ -43,7 +44,7 @@ public class LookAtRaycast : MonoBehaviour
         // Raycast to determine what the player is looking at (transform name)
         if (Physics.Raycast (mainCamera.transform.position, mainCamera.transform.forward, out hit, 100000, ignoreMask)) {
 
-            Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 100000, Color.red);//TODO comment out this once VR is tested
+            //Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 100000, Color.red);
 
             // Vector from camera's position to raycast hit location
             Vector3 a = mainCamera.transform.rotation * Vector3.forward * hit.distance;

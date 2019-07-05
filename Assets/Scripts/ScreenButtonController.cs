@@ -98,6 +98,7 @@ public class ScreenButtonController : MonoBehaviour
         switch (position) {
 
             // Set "left" and "right" buttons to sides 
+            // TODO buttons end up in wrong places when scale is changed (wrong Y level I think)
             case "left_and_right":
                 switch (transform.name) {
                     case "LeftButton":

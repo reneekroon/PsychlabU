@@ -115,6 +115,8 @@ public class MovingCircle : MonoBehaviour
             // But it's 0.9 instead of 9 because the scale of circle transform is 0.1
             transform.Translate(Random.Range(-0.9f, 0.9f), Random.Range(-0.9f, 0.9f), 0);
             lookingForPosition = false;
+            // TODO this is wrong when scale is changed
+            // TODO also position the room at 0,0,0 and stuff
 
             foreach (GameObject otherCircle in otherCircles) {
                 if (Vector3.Distance(otherCircle.transform.localPosition, transform.localPosition) < 2) {
