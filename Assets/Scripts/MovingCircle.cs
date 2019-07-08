@@ -11,10 +11,15 @@ public class MovingCircle : MonoBehaviour
     public float speed = 0.5f;
     Vector3 direction;
     List<GameObject> otherCircles;
+    float maxDistanceFromCenter;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Max distance from center should be half the size of screen (area thet shows textures), that is 1 unit
+        // Screen and the circles have same parent object that should be scaled, so the screen scale should not be accounted for here
+        // However, the circles scale has to be considered, so calculate the max distance from center here:
+        maxDistanceFromCenter = 1f / transform.parent.localScale.x;
 
     }
 
@@ -27,13 +32,13 @@ public class MovingCircle : MonoBehaviour
             transform.Translate(direction * Time.deltaTime * speed);
 
             // if the circle moves out of the screen bounds assign new direction so that it wouldn't
-            if (transform.localPosition.x > 9) {
+            if (transform.localPosition.x > maxDistanceFromCenter) {
                 direction = GetNewDirection("right");
-            } else if (transform.localPosition.x < -9) {
+            } else if (transform.localPosition.x < -maxDistanceFromCenter) {
                 direction = GetNewDirection("left");
-            } else if (transform.localPosition.y > 9) {
+            } else if (transform.localPosition.y > maxDistanceFromCenter) {
                 direction = GetNewDirection("down");
-            } else if (transform.localPosition.y < -9) {
+            } else if (transform.localPosition.y < -maxDistanceFromCenter) {
                 direction = GetNewDirection("up");
             } 
 
@@ -44,6 +49,7 @@ public class MovingCircle : MonoBehaviour
                 Vector3 directionFromOther = otherCircle.transform.localPosition - transform.localPosition;
 
                 // If the other circle is too close the direction should be changed so that they start moving away from each other
+                // Distance of 2 works, regardless of scale
                 if (directionFromOther.magnitude < 2) {
 
                     if (Mathf.Abs(directionFromOther.y) > Mathf.Abs(directionFromOther.x)) {
@@ -111,12 +117,12 @@ public class MovingCircle : MonoBehaviour
         while (lookingForPosition) {
 
             // Assign a random position to circle
-            // Max deviation from center should be 9 so that the circles won't overlap the buttons
-            // But it's 0.9 instead of 9 because the scale of circle transform is 0.1
-            transform.Translate(Random.Range(-0.9f, 0.9f), Random.Range(-0.9f, 0.9f), 0);
+            // Max deviation from center should be 1 unit so that the circles won't overlap the buttons (but no need to multiply by 1 of course)
+            // Also take into account the scale of the screen, so when the screen is smaller the distance should be also smaller
+            float maxDeviation = transform.parent.parent.localScale.x;
+
+            transform.Translate(Random.Range(-maxDeviation, maxDeviation), Random.Range(-maxDeviation, maxDeviation), 0);
             lookingForPosition = false;
-            // TODO this is wrong when scale is changed
-            // TODO also position the room at 0,0,0 and stuff
 
             foreach (GameObject otherCircle in otherCircles) {
                 if (Vector3.Distance(otherCircle.transform.localPosition, transform.localPosition) < 2) {

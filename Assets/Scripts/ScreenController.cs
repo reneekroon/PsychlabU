@@ -49,6 +49,7 @@ public class ScreenController : MonoBehaviour
 
         // Set up the experiment (aka test sequence)
         // Also set the buttons to right places on the screen
+        // TODO add some sort of system/menu to select the experiment
 
         if (experimentName == "recognition") {
             experimentController = new RecognitionExperiment();
