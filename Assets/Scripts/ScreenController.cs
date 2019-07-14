@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System;
+using UnityEngine.SceneManagement;
 
 public class ScreenController : MonoBehaviour
 {
@@ -13,6 +16,7 @@ public class ScreenController : MonoBehaviour
     Experiment experimentController;
     public GameObject uiTimer;
     public GameObject screenTimer;
+    public GameObject experimentOverText;
     public bool useScreenTimer = false;
     TMPro.TextMeshProUGUI textTimer;
     public string experimentName;
@@ -25,19 +29,25 @@ public class ScreenController : MonoBehaviour
     public bool useTimer = true;
     int trial = -1;
     public int maxTrials = 10;
+    List<string> log = new List<string>(); 
+    bool experimentOver;
 
 
 
     void Start()
     {
 
-        if (useScreenTimer) {
+        // Select between the two different timers based on user selection in the menu
+        // Also, uiTimer doesn't work in VR so select the other one for VR
+        useScreenTimer = PlayerPrefs.GetInt("counter") == 1;
+        if (useScreenTimer || PlayerPrefs.GetInt("vr") == 1) {
             textTimer = screenTimer.GetComponent<TMPro.TextMeshProUGUI>();
         } else {
             textTimer = uiTimer.GetComponent<TMPro.TextMeshProUGUI>();
         }
 
         gameObject.GetComponent<Renderer>().material.color = Color.white;
+        experimentOver = false;
 
         // To get all the circle that need to move in tracking experiment
         circles = GameObject.FindGameObjectsWithTag("screenobject_circle");
@@ -47,10 +57,20 @@ public class ScreenController : MonoBehaviour
             circle.SetActive(false);
         }
 
+        // Set experiment length limits as selected in the menu
+        maxTrials = PlayerPrefs.GetInt("length");
+        sequenceLength = maxTrials;
+
+        // Check if "experiment length in seconds" is selected
+        useTimer = PlayerPrefs.GetInt("limit") == 0;
+
+
+        // Decode the dropdown selection number to experiment name
+        string[] experimentNames = {"search", "recognition", "visumotor", "tracking"};
+        experimentName = experimentNames[PlayerPrefs.GetInt("experiment")];
+
         // Set up the experiment (aka test sequence)
         // Also set the buttons to right places on the screen
-        // TODO add some sort of system/menu to select the experiment
-
         if (experimentName == "recognition") {
             experimentController = new RecognitionExperiment();
             leftButton.GetComponent<ScreenButtonController>().PositionButtons("left_and_right");
@@ -78,6 +98,14 @@ public class ScreenController : MonoBehaviour
 
     void Update() 
     {
+
+        // Used to detect key press to return to menu after the experiment is over
+        if (experimentOver) {
+            if (Input.GetAxis("Submit") > 0) {
+                SceneManager.LoadScene("Menu");
+            }
+        }
+
         // If the experiment length is limited by timer
         if (useTimer) {
 
@@ -201,18 +229,17 @@ public class ScreenController : MonoBehaviour
         if (sequenceStart != 0 || (!useTimer && trial >= 0)) {
 
             // Gather info that is necessary
-            string info = "Trial: " + (trial + 1) + ", Duration: " + trialDuration + ", Answer: " + button + ", Correct: " + experimentController.correctAnswer;
+            //string info = "Trial: " + (trial + 1) + ", Duration: " + trialDuration + ", Answer: " + button + ", Correct: " + experimentController.correctAnswer;
+            string info = (trial + 1) + "," + trialDuration + "," + button + "," + experimentController.correctAnswer;
+            log.Add(info);
 
-            // TODO do something with the info
-            Debug.Log(info);
         }
     }
 
 
     void EndTestSequence() {
 
-        // End the timer calculations
-        Debug.Log("Test over!");
+        experimentOver = true;
         // Set this to negative so that the experiment doesn't accidentally start again
         sequenceStart = -1;
 
@@ -226,17 +253,33 @@ public class ScreenController : MonoBehaviour
         bottomButton.SetActive(false);
         rightButton.SetActive(false);
 
-        if(!movingExperiment) {
-            // Make the screen blank
-            gameObject.GetComponent<Renderer>().material.mainTexture = null;
-        } else {
-            // Because the "tracking" experiment uses moving gameobjects instead of a texture, reset these gameobjects instead
+        // Make the screen invisible (so that "experiment over" text wouldn't glitch behind it sometimes)
+        gameObject.GetComponent<Renderer>().forceRenderingOff = true;  
+
+        if (movingExperiment) {
+            // Because the "tracking" experiment uses moving gameobjects instead of a texture, reset these gameobjects also
             foreach (GameObject circle in circles) {
                 circle.GetComponent<MovingCircle>().Reset();
             }
         }
 
-        return;
+        // Show the "experiment over!" text
+        experimentOverText.SetActive(true);
+
+
+        // Check if logging is enabled
+        if (PlayerPrefs.GetInt("logging") == 1) {
+
+            // Save the experiment gathered information to a CSV file
+            string fileName = "Assets/Logs/" + experimentName + "-" + DateTime.Now.ToString("HH-mm-ss_dd-MM-yyyy") + ".csv";
+            StreamWriter writer = new StreamWriter(fileName);
+            writer.WriteLine("trial,duration,answer,correct");
+            foreach (string line in log) {
+                writer.WriteLine(line);
+            }
+            writer.Close();
+
+        }
     }
 
 
