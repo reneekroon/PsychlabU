@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Experiment
 {
 
-    // This must be set after the GetNextTexture method is called and befor it returns the texture
+    // This must be set after the GetNextTexture method is called and before it returns the texture
     public int correctAnswer;
 
     public int specialButtonFeatureCode;

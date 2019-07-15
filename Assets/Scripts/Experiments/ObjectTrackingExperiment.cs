@@ -5,8 +5,9 @@ using UnityEngine;
 public class ObjectTrackingExperiment : Experiment
 {
 
-    GameObject[] circles;
-    int count;
+    private GameObject[] circles;
+    private int count;
+    
 
     public ObjectTrackingExperiment(GameObject[] _circles) {
 

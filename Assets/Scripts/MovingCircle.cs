@@ -5,21 +5,26 @@ using UnityEngine;
 public class MovingCircle : MonoBehaviour
 {
 
-    bool tracked = false;
-    bool target = false;
-    bool moving = false;
-    public float speed = 0.5f;
-    Vector3 direction;
-    List<GameObject> otherCircles;
-    float maxDistanceFromCenter;
+    private bool tracked = false;
+    private bool target = false;
+    private bool moving = false;
+    private float speed;
+    private int duration;
+    private Vector3 direction;
+    private List<GameObject> otherCircles;
+    private float maxDistanceFromCenter;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         // Max distance from center should be half the size of screen (area thet shows textures), that is 1 unit
         // Screen and the circles have same parent object that should be scaled, so the screen scale should not be accounted for here
         // However, the circles scale has to be considered, so calculate the max distance from center here:
         maxDistanceFromCenter = 1f / transform.parent.localScale.x;
+
+        speed = PlayerPrefs.GetInt("tracking_speed") / 10f;
+        // Duration is the duration of the whole trial, so one second of showing colors and then duration - 1 seconds of moving
+        duration = PlayerPrefs.GetInt("tracking_length");
 
     }
 
@@ -89,8 +94,8 @@ public class MovingCircle : MonoBehaviour
         // Then start moving
         moving = true;
 
-        // Stop moving after a few seconds
-        Invoke("StopMoving", 2);
+        // Stop moving after a designated amount of seconds
+        Invoke("StopMoving", duration - 1);
 
     }
 

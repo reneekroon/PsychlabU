@@ -13,25 +13,24 @@ public class ScreenController : MonoBehaviour
     public GameObject rightButton;
     public GameObject topButton;
     public GameObject bottomButton;
-    Experiment experimentController;
     public GameObject uiTimer;
     public GameObject screenTimer;
     public GameObject experimentOverText;
-    public bool useScreenTimer = false;
-    TMPro.TextMeshProUGUI textTimer;
-    public string experimentName;
-    public int experimentMode = 0;
-    GameObject[] circles;
-    float trialStart = 0;
-    float sequenceStart = 0;
-    int sequenceLength = 30;
-    bool movingExperiment = false;
-    public bool useTimer = true;
-    int trial = -1;
-    public int maxTrials = 10;
-    List<string> log = new List<string>(); 
-    bool experimentOver;
 
+    private Experiment experimentController;
+    private bool useScreenTimer;
+    private TMPro.TextMeshProUGUI textTimer;
+    private string experimentName;
+    private GameObject[] circles;
+    private int animationLength;
+    private float trialStart = 0;
+    private float sequenceStart = 0;
+    private int trialsLength;
+    private bool movingExperiment = false;
+    private bool useTimer;
+    private int trial = -1;
+    private List<string> log = new List<string>(); 
+    private bool experimentOver;
 
 
     void Start()
@@ -58,12 +57,13 @@ public class ScreenController : MonoBehaviour
         }
 
         // Set experiment length limits as selected in the menu
-        maxTrials = PlayerPrefs.GetInt("length");
-        sequenceLength = maxTrials;
+        trialsLength = PlayerPrefs.GetInt("length");
 
         // Check if "experiment length in seconds" is selected
         useTimer = PlayerPrefs.GetInt("limit") == 0;
 
+        // Get the animation length for the animated experiment
+        animationLength = PlayerPrefs.GetInt("tracking_length");
 
         // Decode the dropdown selection number to experiment name
         string[] experimentNames = {"search", "recognition", "visumotor", "tracking"};
@@ -76,7 +76,7 @@ public class ScreenController : MonoBehaviour
             leftButton.GetComponent<ScreenButtonController>().PositionButtons("left_and_right");
             rightButton.GetComponent<ScreenButtonController>().PositionButtons("left_and_right");
         } else if (experimentName == "search") {
-            experimentController = new SearchExperiment(experimentMode);
+            experimentController = new SearchExperiment();
             // This is default button configuration, so this does nothing (at the moment)
             leftButton.GetComponent<ScreenButtonController>().PositionButtons("bottom");
             rightButton.GetComponent<ScreenButtonController>().PositionButtons("bottom");
@@ -116,7 +116,7 @@ public class ScreenController : MonoBehaviour
                 textTimer.text = (Time.time - sequenceStart).ToString("F0");
 
                 // If time is over, end the test sequence
-                if (Time.time - sequenceStart > sequenceLength) {
+                if (Time.time - sequenceStart > trialsLength) {
                     EndTestSequence();
                 }
             }
@@ -149,7 +149,6 @@ public class ScreenController : MonoBehaviour
             ActivateButtons();
         } else {
             // If must wait for experiment to finish animation before enabling the buttons, it can be done here
-            float animationLength = 3f;
             Invoke("ActivateButtons", animationLength);
         }
         
@@ -206,14 +205,14 @@ public class ScreenController : MonoBehaviour
         topButton.SetActive(false);
         bottomButton.SetActive(false);
 
-        // The center button should be makde visble now
+        // The center button should be made visble now
         centerButton.SetActive(true);
 
         // Trial finished
         trial++;
 
         // If timer is not used, check for experiment over
-        if (!useTimer && trial >= maxTrials) {
+        if (!useTimer && trial >= trialsLength) {
             EndTestSequence();
         }
         
@@ -244,14 +243,17 @@ public class ScreenController : MonoBehaviour
         sequenceStart = -1;
 
         // Do this or the buttons will come back with "tracking" experiment
+        // Not really needed since buttons are destroyed now
         CancelInvoke();
 
         // Disable all the buttons
-        centerButton.SetActive(false);
-        leftButton.SetActive(false);
-        topButton.SetActive(false);
-        bottomButton.SetActive(false);
-        rightButton.SetActive(false);
+        // There was a bug that still caused the buttons to come back (when looking at the center button the same frame when experiment ends i think)
+        // So this makes sure that they wont be coming back
+        Destroy(centerButton);
+        Destroy(topButton);
+        Destroy(bottomButton);
+        Destroy(leftButton);
+        Destroy(rightButton);
 
         // Make the screen invisible (so that "experiment over" text wouldn't glitch behind it sometimes)
         gameObject.GetComponent<Renderer>().forceRenderingOff = true;  

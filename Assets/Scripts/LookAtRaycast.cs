@@ -11,15 +11,15 @@ public class LookAtRaycast : MonoBehaviour
     public GameObject bottomButton;
     public GameObject centerButton;
     public GameObject mainCamera;
-    ScreenButtonController left;
-    ScreenButtonController right;
-    ScreenButtonController top;
-    ScreenButtonController bottom;
-    ScreenButtonController center;
     public LayerMask mask;
-    int ignoreMask;
 
-    string last = "";
+    private ScreenButtonController left;
+    private ScreenButtonController right;
+    private ScreenButtonController top;
+    private ScreenButtonController bottom;
+    private ScreenButtonController center;
+    private int ignoreMask;
+    private string last = "";
     
 
     void Start()
@@ -96,25 +96,26 @@ public class LookAtRaycast : MonoBehaviour
                     break;
 
                 // If looked at button last frame and not anymore, call the lookExit method
+                // Also checks if these button still exist (because they get destroyed after the experiment ends)
                 default:
 
                     if (last != ""){
 
                         switch (last) {
                             case "LeftButton":
-                                left.LookExit();
+                                if (leftButton) left.LookExit();
                                 break;
                             case "RightButton":
-                                right.LookExit();
+                                if (rightButton) right.LookExit();
                                 break;
                             case "TopButton":
-                                top.LookExit();
+                                if (topButton) top.LookExit();
                                 break;
                             case "BottomButton":
-                                bottom.LookExit();
+                                if (bottomButton) bottom.LookExit();
                                 break;
                             case "CenterButtonCollider":
-                                center.LookExit();
+                                if (centerButton) center.LookExit();
                                 break;
                         }
                         last = "";

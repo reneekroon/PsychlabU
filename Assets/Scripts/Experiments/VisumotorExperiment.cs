@@ -5,10 +5,11 @@ using UnityEngine;
 public class VisumotorExperiment : Experiment
 {
 
-    List<Texture2D> images = new List<Texture2D>();
-    int imagesIterator = 0;
-    List<Texture2D> usedImages = new List<Texture2D>();
-    List<int> directions = new List<int>();
+    private List<Texture2D> images = new List<Texture2D>();
+    private int imagesIterator = 0;
+    private int chance;
+    private List<Texture2D> usedImages = new List<Texture2D>();
+    private List<int> directions = new List<int>();
 
 
     public VisumotorExperiment() {
@@ -18,6 +19,8 @@ public class VisumotorExperiment : Experiment
         // correctAnswer - 1 right
         // correctAnswer - 2 top
         // correctAnswer - 3 bottom
+
+        chance = PlayerPrefs.GetInt("visumotor_chance");
 
         Start();
 
@@ -44,8 +47,8 @@ public class VisumotorExperiment : Experiment
 
     public override Texture2D GetNextTexture() {
 
-        // 50% chance that the image has appeared alreay
-        if (Random.Range(0,2) == 0) {
+        // Chance that the image has appeared alreay
+        if (Random.Range(0, 100) >= chance) {
             // Only if there are images that have been shown already (when experiment has just started there are none)
             if (usedImages.Count > 0) {
                 

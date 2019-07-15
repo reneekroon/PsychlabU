@@ -5,20 +5,22 @@ using UnityEngine;
 public class SearchExperiment : Experiment
 {
 
-    List<List<List<int>>> shapes = new List<List<List<int>>>();
-    List<Color> colors = new List<Color>();
-    int mode;
-    int border = 0;
-    Color white = Color.white;
+    private List<List<List<int>>> shapes = new List<List<List<int>>>();
+    private List<Color> colors = new List<Color>();
+    private int mode;
+    private int chance;
+    private int border = 0;
+    private Color white = Color.white;
 
 
-    public SearchExperiment(int _mode) {
+    public SearchExperiment() {
 
         // correctAnswer - 0 if generated image doesn't contain target shape (left button)
         // correctAnswer - 1 if generated image contains target shape with target color (right button)
         // target shape is the first element in shapes list (similarily for target color)
 
-        mode = _mode;
+        mode = PlayerPrefs.GetInt("search_mode");
+        chance = PlayerPrefs.GetInt("search_chance");
 
         // No special button feature
         specialButtonFeatureCode = 0;
@@ -97,8 +99,8 @@ public class SearchExperiment : Experiment
         for (int i = border; i < 32 + border; i += 4) {
             for (int j = border; j < 32 + border; j += 4) {
                 
-                // 65% chance that tile contains a shape
-                if (Random.Range(0, 100) < 65){
+                // chance that tile contains a shape
+                if (Random.Range(0, 100) < chance){
                     
                     // The shape that will be used, depending on mode
                     int randomShapeInt = 0;

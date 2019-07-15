@@ -5,9 +5,10 @@ using UnityEngine;
 public class RecognitionExperiment : Experiment
 {
 
-    List<Texture2D> images = new List<Texture2D>();
-    int imagesIterator = 0;
-    List<Texture2D> usedImages = new List<Texture2D>();
+    private List<Texture2D> images = new List<Texture2D>();
+    private int imagesIterator = 0;
+    private int chance;
+    private List<Texture2D> usedImages = new List<Texture2D>();
 
 
     public RecognitionExperiment() {
@@ -17,6 +18,8 @@ public class RecognitionExperiment : Experiment
 
         // No special button feature
         specialButtonFeatureCode = 0;
+
+        chance = PlayerPrefs.GetInt("recognition_chance");
 
         Start();
 
@@ -43,8 +46,8 @@ public class RecognitionExperiment : Experiment
 
     public override Texture2D GetNextTexture() {
 
-        // 50% chance that the image has appeared alreay
-        if (Random.Range(0,2) == 0) {
+        // Chance that the image has appeared alreay
+        if (Random.Range(0, 100) >= chance) {
             // Only if there are images that have been shown already (when experiment has just started there are none)
             if (usedImages.Count > 0) {
                 // Return random image that appeared already

@@ -6,11 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-
     private GameObject searchOptions;
     private GameObject recognitionOptions;
     private GameObject visumotorOptions;
     private GameObject trackingOptions;
+
 
     public void StartGame() {
 
@@ -45,7 +45,6 @@ public class Menu : MonoBehaviour
                     // Use this value when parsing int failed 
                     search_chance = 65; 
                 }
-                Debug.Log(search_mode + ", " + search_chance);
 
                 PlayerPrefs.SetInt("search_mode", search_mode);
                 PlayerPrefs.SetInt("search_chance", search_chance);
@@ -58,7 +57,6 @@ public class Menu : MonoBehaviour
                 if (!int.TryParse(recognitionOptions.transform.Find("RecognitionInputField").GetComponent<TMPro.TMP_InputField>().text, out recognition_chance)) {
                     search_chance = 50; 
                 }
-                Debug.Log(recognition_chance);
 
                 PlayerPrefs.SetInt("recognition_chance", recognition_chance);
 
@@ -70,7 +68,6 @@ public class Menu : MonoBehaviour
                 if (!int.TryParse(visumotorOptions.transform.Find("VisumotorInputField").GetComponent<TMPro.TMP_InputField>().text, out visumotor_chance)) {
                     search_chance = 50; 
                 }
-                Debug.Log(visumotor_chance);
 
                 PlayerPrefs.SetInt("visumotor_chance", visumotor_chance);
             
@@ -84,9 +81,8 @@ public class Menu : MonoBehaviour
                     tracking_speed = 5; // This has to be divided by 10
                 }
                 if (!int.TryParse(trackingOptions.transform.Find("TrackingLengthInputField").GetComponent<TMPro.TMP_InputField>().text, out tracking_length)) {
-                    tracking_length = 2; 
+                    tracking_length = 3; 
                 }
-                Debug.Log(tracking_speed + ", " + tracking_length);
 
                 PlayerPrefs.SetInt("tracking_speed", tracking_speed);
                 PlayerPrefs.SetInt("tracking_length", tracking_length);
@@ -126,7 +122,6 @@ public class Menu : MonoBehaviour
         string length = PlayerPrefs.GetInt("length").ToString();
 
         // Apply setting from previous time they were set 
-        //TODO this probably doesn't work when there are no setting saved? 
         transform.Find("LeftMenu").Find("ExperimentDropdown").GetComponent<TMPro.TMP_Dropdown>().value = experiment;
         transform.Find("LeftMenu").Find("VRToggle").GetComponent<Toggle>().isOn = vr;
         transform.Find("LeftMenu").Find("CounterToggle").GetComponent<Toggle>().isOn = counter;
@@ -151,18 +146,24 @@ public class Menu : MonoBehaviour
         int experiment = transform.Find("LeftMenu").Find("ExperimentDropdown").GetComponent<TMPro.TMP_Dropdown>().value;
 
         // Set the options for that experiment to be active
-        // TODO loading from playerPrefs can also be done here
+        // Also load the previously used state from PlayerPrefs
         switch(experiment) {
             case 0:
+                searchOptions.transform.Find("SearchDropdown").GetComponent<TMPro.TMP_Dropdown>().value = PlayerPrefs.GetInt("search_mode");
+                searchOptions.transform.Find("SearchInputField").GetComponent<TMPro.TMP_InputField>().text = PlayerPrefs.GetInt("search_chance").ToString();
                 searchOptions.SetActive(true);
                 break;
             case 1:
+                recognitionOptions.transform.Find("RecognitionInputField").GetComponent<TMPro.TMP_InputField>().text = PlayerPrefs.GetInt("recognition_chance").ToString();
                 recognitionOptions.SetActive(true);
                 break;
             case 2:
+                visumotorOptions.transform.Find("VisumotorInputField").GetComponent<TMPro.TMP_InputField>().text = PlayerPrefs.GetInt("visumotor_chance").ToString();
                 visumotorOptions.SetActive(true);
                 break;
             case 3:
+                trackingOptions.transform.Find("TrackingSpeedInputField").GetComponent<TMPro.TMP_InputField>().text = PlayerPrefs.GetInt("tracking_speed").ToString();
+                trackingOptions.transform.Find("TrackingLengthInputField").GetComponent<TMPro.TMP_InputField>().text = PlayerPrefs.GetInt("tracking_length").ToString();
                 trackingOptions.SetActive(true);
                 break;
         }

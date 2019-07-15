@@ -6,7 +6,8 @@ public class ScreenButtonController : MonoBehaviour
 {
     public GameObject screenObject;
     public string type;
-    ScreenController screen;
+    
+    private ScreenController screen;
 
     void Start()
     {
