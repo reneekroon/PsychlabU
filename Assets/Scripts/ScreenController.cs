@@ -69,6 +69,9 @@ public class ScreenController : MonoBehaviour
         string[] experimentNames = {"search", "recognition", "visumotor", "tracking"};
         experimentName = experimentNames[PlayerPrefs.GetInt("experiment")];
 
+        // The selection from menu can be overridden here, useful if no menu button is added for the experiment 
+        //experimentName = "example";
+
         // Set up the experiment (aka test sequence)
         // Also set the buttons to right places on the screen
         if (experimentName == "recognition") {
@@ -91,6 +94,9 @@ public class ScreenController : MonoBehaviour
             leftButton.GetComponent<ScreenButtonController>().PositionButtons("bottom");
             rightButton.GetComponent<ScreenButtonController>().PositionButtons("bottom");
             movingExperiment = true;
+        } else if (experimentName == "example") {
+            experimentController = new ExampleExperiment();
+            // Configure buttons if needed
         }
 
 
