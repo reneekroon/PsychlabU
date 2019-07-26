@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe681b376fccc409c13b63f4672d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!114 &8687205597413901461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25,7 +24,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe681b376fccc409c13b63f4672d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!114 &8687205596719817451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38,7 +36,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe681b376fccc409c13b63f4672d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!114 &8687205597665412172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51,7 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe681b376fccc409c13b63f4672d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!114 &8687205596234616318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,7 +60,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe681b376fccc409c13b63f4672d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!114 &8687205598237417842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe681b376fccc409c13b63f4672d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!114 &8687205597327686860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,7 +98,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe681b376fccc409c13b63f4672d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!114 &8687205597492875695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,7 +110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe681b376fccc409c13b63f4672d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!114 &8687205597240970973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe681b376fccc409c13b63f4672d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!114 &8687205597522837997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe681b376fccc409c13b63f4672d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!1 &3008126620411863219
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,7 +353,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a12f00adc929cb5458ae0853e15e8289, type: 2}
+  - {fileID: 2100000, guid: 7ad1d75aa9143a546befdca968248fe7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -418,11 +408,7 @@ MonoBehaviour:
   uiTimer: {fileID: 0}
   screenTimer: {fileID: 8687205597404987294}
   experimentOverText: {fileID: 3008126620411863219}
-  useScreenTimer: 1
-  experimentName: visumotor
-  experimentMode: 3
-  useTimer: 0
-  maxTrials: 5
+  transparentMaterial: {fileID: 2100000, guid: a12f00adc929cb5458ae0853e15e8289, type: 2}
 --- !u!1 &8687205597080118430
 GameObject:
   m_ObjectHideFlags: 0
@@ -1966,6 +1952,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8687205597080118429}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: 193fef862b4ff8743895932c18dbd2e4,
+        type: 3}
+      propertyPath: m_Name
+      value: CenterButton
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 193fef862b4ff8743895932c18dbd2e4,
+        type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 193fef862b4ff8743895932c18dbd2e4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2035,16 +2031,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 193fef862b4ff8743895932c18dbd2e4,
-        type: 3}
-      propertyPath: m_Name
-      value: CenterButton
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 193fef862b4ff8743895932c18dbd2e4,
-        type: 3}
-      propertyPath: m_Icon
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 193fef862b4ff8743895932c18dbd2e4,
         type: 3}

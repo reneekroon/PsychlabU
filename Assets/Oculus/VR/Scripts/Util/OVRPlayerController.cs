@@ -320,8 +320,10 @@ public class OVRPlayerController : MonoBehaviour
 		if (EnableLinearMovement)
 		{
 			bool moveForward = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
-			bool moveLeft = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
-			bool moveRight = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
+            //bool moveLeft = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
+            //bool moveRight = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
+            bool moveLeft = false;
+            bool moveRight = false;
 			bool moveBack = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
 
 			bool dpad_move = false;
@@ -363,6 +365,7 @@ public class OVRPlayerController : MonoBehaviour
 			ortEuler.z = ortEuler.x = 0f;
 			ort = Quaternion.Euler(ortEuler);
 
+            /*
 			if (moveForward)
 				MoveThrottle += ort * (transform.lossyScale.z * moveInfluence * Vector3.forward);
 			if (moveBack)
@@ -371,10 +374,15 @@ public class OVRPlayerController : MonoBehaviour
 				MoveThrottle += ort * (transform.lossyScale.x * moveInfluence * BackAndSideDampen * Vector3.left);
 			if (moveRight)
 				MoveThrottle += ort * (transform.lossyScale.x * moveInfluence * BackAndSideDampen * Vector3.right);
+                */
+
+            if (moveForward)
+                MoveThrottle += transform.lossyScale.z * moveInfluence * Vector3.forward;
+            if (moveBack)
+                MoveThrottle += transform.lossyScale.z * moveInfluence * Vector3.back;
 
 
-
-			moveInfluence = Acceleration * 0.1f * MoveScale * MoveScaleMultiplier;
+            moveInfluence = Acceleration * 0.1f * MoveScale * MoveScaleMultiplier;
 
 #if !UNITY_ANDROID // LeftTrigger not avail on Android game pad
 			moveInfluence *= 1.0f + OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger);

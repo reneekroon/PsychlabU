@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 
 public class ScreenController : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class ScreenController : MonoBehaviour
     public GameObject uiTimer;
     public GameObject screenTimer;
     public GameObject experimentOverText;
+    public Material transparentMaterial;
 
     private Experiment experimentController;
     private bool useScreenTimer;
@@ -35,6 +37,16 @@ public class ScreenController : MonoBehaviour
 
     void Start()
     {
+
+        
+        //gameObject.GetComponent<Renderer>().material = transparentMaterial;
+
+        // Enable or disable VR here. It needs to be done separate from loading the device (done in the menu), otherwise VR doesn't seem to work
+        if (SceneManager.GetActiveScene().name != "VRRoom") {
+            XRSettings.enabled = false;
+        } else {
+            XRSettings.enabled = true;
+        }
 
         // Select between the two different timers based on user selection in the menu
         // Also, uiTimer doesn't work in VR so select the other one for VR
@@ -104,6 +116,11 @@ public class ScreenController : MonoBehaviour
 
     void Update() 
     {
+
+        // Pressing "Escape" now returns to main menu
+        if (Input.GetAxis("Cancel") > 0) {
+            SceneManager.LoadScene("Menu");
+        }
 
         // Used to detect key press to return to menu after the experiment is over
         if (experimentOver) {
@@ -279,7 +296,9 @@ public class ScreenController : MonoBehaviour
         if (PlayerPrefs.GetInt("logging") == 1) {
 
             // Save the experiment gathered information to a CSV file
-            string fileName = "Assets/Logs/" + experimentName + "-" + DateTime.Now.ToString("HH-mm-ss_dd-MM-yyyy") + ".csv";
+            string fileName = Application.dataPath + "/Logs/" + experimentName + "-" + DateTime.Now.ToString("HH-mm-ss_dd-MM-yyyy") + ".csv";
+            //string fileName = "Assets/Logs/" + experimentName + "-" + DateTime.Now.ToString("HH-mm-ss_dd-MM-yyyy") + ".csv";
+            
             StreamWriter writer = new StreamWriter(fileName);
             writer.WriteLine("trial,duration,answer,correct");
             foreach (string line in log) {

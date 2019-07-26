@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 
 public class Menu : MonoBehaviour
 {
@@ -92,10 +93,12 @@ public class Menu : MonoBehaviour
 
         PlayerPrefs.Save();
 
-        // Start the experiment 
+        // Load appropriate VR devicee and start the experiment 
         if (vr) {
+            XRSettings.LoadDeviceByName("Oculus");
             SceneManager.LoadScene("VRRoom");
         } else {
+            XRSettings.LoadDeviceByName("");
             SceneManager.LoadScene("FirstPersonRoom");
         }
 
@@ -169,6 +172,18 @@ public class Menu : MonoBehaviour
         }
 
 
+
+    }
+
+    public void Update() {
+
+        // Because pressing "Start" button with VR headset on is too hard
+        if (Input.GetAxis("Submit") > 0) {
+            StartGame();
+        // Pressing "Escape" in the menu quits
+        } else if (Input.GetAxis("Cancel") > 0) {
+            Application.Quit();
+        }
 
     }
 

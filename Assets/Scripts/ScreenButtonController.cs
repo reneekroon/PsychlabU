@@ -101,11 +101,12 @@ public class ScreenButtonController : MonoBehaviour
             // Set "left" and "right" buttons to sides 
             case "left_and_right":
                 switch (transform.name) {
+                    // This also has to take into account the scale of the screen
                     case "LeftButton":
-                        transform.Translate(-0.9f, 1.3f, 0);
+                        transform.Translate(-0.9f * transform.parent.localScale.x, 1.3f * transform.parent.localScale.y, 0);
                         break;
                     case "RightButton":
-                        transform.Translate(0.9f, 1.3f, 0);
+                        transform.Translate(0.9f * transform.parent.localScale.x, 1.3f * transform.parent.localScale.y, 0);
                         break;
                 }
                 break;

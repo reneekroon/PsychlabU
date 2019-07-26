@@ -36,7 +36,7 @@ public class LookAtRaycast : MonoBehaviour
 
     }
 
-    void Update()
+    void LateUpdate()
     {
         RaycastHit hit;
 
@@ -54,6 +54,7 @@ public class LookAtRaycast : MonoBehaviour
 
             // Make the crosshair appear at the position the player is looking at and rotaed same way as the surface
             transform.position = mainCamera.transform.position + a + b;
+            //transform.position = Vector3.Lerp(transform.position, mainCamera.transform.position + a + b, Time.deltaTime * 40);
             transform.rotation = hit.transform.rotation;
 
             string name = hit.transform.name;            
