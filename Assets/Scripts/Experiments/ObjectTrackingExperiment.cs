@@ -18,6 +18,10 @@ public class ObjectTrackingExperiment : Experiment
         // No special button feature
         specialButtonFeatureCode = 0;
 
+        // Set up sending data about experiment to log file
+        logData = new Dictionary<string, string>();
+        logData.Add("circleCount", "");
+
         circles = _circles;
         
         Start();
@@ -33,8 +37,8 @@ public class ObjectTrackingExperiment : Experiment
 
         // Setup the trial
 
-        // Decide how many circles shall partake, min 2, max all of them
-        count = Random.Range(2, circles.Length + 1);
+        // Randomly Decide how many circles in experiment, minimum of 2, they come in pairs (half are green and half are not)
+        count = 2 * Random.Range(1, circles.Length / 2 + 1);
 
         // Setup the circles
         for (int i = 0; i < count; i++) {
@@ -67,7 +71,10 @@ public class ObjectTrackingExperiment : Experiment
             circles[i].GetComponent<MovingCircle>().PrepareMoving();
         }
 
-        // Since this uses the circles no texture is returned, and the background remains white
+        // Set data that can be accessed for putting it in the log file
+        logData["circleCount"] = count.ToString();
+
+        // Since this uses the circles no texture is returned, and the background remains same
         return null;
     }
 

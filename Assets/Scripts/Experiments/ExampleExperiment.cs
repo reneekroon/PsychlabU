@@ -8,6 +8,7 @@ public class ExampleExperiment : Experiment
 
         // Load settings from PlayerPrefs
         // Do special features if needed
+        // Just copy and paste another experimnet really
 
     }
 

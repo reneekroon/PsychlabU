@@ -5,10 +5,11 @@ using UnityEngine;
 public class RecognitionExperiment : Experiment
 {
 
-    private List<Texture2D> images = new List<Texture2D>();
-    private int imagesIterator = 0;
+    //private List<Texture2D> images = new List<Texture2D>();
+    private Object[] images;
     private int chance;
     private List<Texture2D> usedImages = new List<Texture2D>();
+    private List<int> numbers = new List<int>();
 
 
     public RecognitionExperiment() {
@@ -18,6 +19,10 @@ public class RecognitionExperiment : Experiment
 
         // No special button feature
         specialButtonFeatureCode = 0;
+
+        // Set up sending data about experiment to log file
+        logData = new Dictionary<string, string>();
+        logData.Add("imageName", "");
 
         chance = PlayerPrefs.GetInt("recognition_chance");
 
@@ -29,17 +34,12 @@ public class RecognitionExperiment : Experiment
     void Start()
     {
 
-        // Making a list on numbers from 0 to 49 because I don't know how to do it
-        List<int> numbers = new List<int>();
-        for (int i = 0; i < 50; i++) {
-            numbers.Add(i);
-        }
+        // Loading all images from the "Images" folder
+        images = Resources.LoadAll("Images");
 
-        // Importing (loading) all 50 images in a random order, so no need to shuffle them later
-        for (int i = 0; i < 50; i++) {
-            int importable = numbers[Random.Range(0, numbers.Count)];
-            numbers.Remove(importable);
-            images.Add((Texture2D)Resources.Load("Images/test-" + importable));
+        // Struggling with shuffling the images
+        for (int i = 0; i < images.Length; i++) {
+            numbers.Add(i);
         }
     }
 
@@ -50,19 +50,24 @@ public class RecognitionExperiment : Experiment
         if (Random.Range(0, 100) >= chance) {
             // Only if there are images that have been shown already (when experiment has just started there are none)
             if (usedImages.Count > 0) {
-                // Return random image that appeared already
+                // Select and return random image that appeared already
+                Texture2D usedImage = usedImages[Random.Range(0, usedImages.Count)];
+                logData["imageName"] = usedImage.name;
                 correctAnswer = 1;
-                return usedImages[Random.Range(0, usedImages.Count)];
+                return usedImage;
             }
         }
 
-        // Otherwise pick the next image
-        Texture2D pickedImage = images[imagesIterator];
-        imagesIterator++;
+        // Otherwise pick the next image (picking by random index)
+        int randomImageIndex = numbers[Random.Range(0, numbers.Count)];
+        numbers.Remove(randomImageIndex);
+        Texture2D pickedImage = (Texture2D)images[randomImageIndex];
+        
         // And add it to images that have already appeared
         usedImages.Add(pickedImage);
-        correctAnswer = 0;
 
+        logData["imageName"] = pickedImage.name;
+        correctAnswer = 0;
         return pickedImage;
     }
 

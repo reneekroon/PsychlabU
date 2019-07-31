@@ -253,6 +253,12 @@ public class ScreenController : MonoBehaviour
             // Gather info that is necessary
             //string info = "Trial: " + (trial + 1) + ", Duration: " + trialDuration + ", Answer: " + button + ", Correct: " + experimentController.correctAnswer;
             string info = (trial + 1) + "," + trialDuration + "," + button + "," + experimentController.correctAnswer;
+
+            // Get available info from experiment controller
+            foreach (string key in experimentController.logData.Keys) {
+                info += "," + experimentController.logData[key];
+            }
+
             log.Add(info);
 
         }
@@ -300,7 +306,15 @@ public class ScreenController : MonoBehaviour
             //string fileName = "Assets/Logs/" + experimentName + "-" + DateTime.Now.ToString("HH-mm-ss_dd-MM-yyyy") + ".csv";
             
             StreamWriter writer = new StreamWriter(fileName);
-            writer.WriteLine("trial,duration,answer,correct");
+
+            // All the row names for CSV file, and finding the names of the data available from experiment controller
+            string rowNames = "trial,duration,answer,correct";
+            foreach (string key in experimentController.logData.Keys) {
+                rowNames += "," + key;
+            }
+
+            // And writing the saved data to file row by row
+            writer.WriteLine(rowNames);
             foreach (string line in log) {
                 writer.WriteLine(line);
             }

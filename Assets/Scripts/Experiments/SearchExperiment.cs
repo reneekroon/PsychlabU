@@ -9,8 +9,10 @@ public class SearchExperiment : Experiment
     private List<Color> colors = new List<Color>();
     private int mode;
     private int chance;
+    private int random;
     private int border = 0;
     private Color white = Color.white;
+    private int distractorCount;
 
 
     public SearchExperiment() {
@@ -21,10 +23,16 @@ public class SearchExperiment : Experiment
 
         mode = PlayerPrefs.GetInt("search_mode");
         chance = PlayerPrefs.GetInt("search_chance");
+        random = PlayerPrefs.GetInt("search_random");
+
+        // Set up sending data about experiment to log file
+        logData = new Dictionary<string, string>();
+        logData.Add("distractorCount", "");
+        logData.Add("distractorChance", "");
 
         // No special button feature
         specialButtonFeatureCode = 0;
-        
+       
         Start();
 
     }
@@ -92,6 +100,13 @@ public class SearchExperiment : Experiment
             newMode = mode;
         }
 
+        distractorCount = 0;
+
+        // enabling the use of random chance if selected from menu
+        if (random == 1) {
+            // It increses by 10 at a time, so 10%, 20% ... 100%
+            chance = 10 * Random.Range(1, 11);
+        }
 
         Texture2D texture = new Texture2D(32 + 2 * border, 32 + 2 * border, TextureFormat.ARGB32, false);
 
@@ -101,7 +116,10 @@ public class SearchExperiment : Experiment
                 
                 // chance that tile contains a shape
                 if (Random.Range(0, 100) < chance){
-                    
+
+                    // To count how many distractors are added in the trial
+                    distractorCount += 1;
+
                     // The shape that will be used, depending on mode
                     int randomShapeInt = 0;
                     List<List<int>> randomShape;
@@ -182,6 +200,10 @@ public class SearchExperiment : Experiment
         texture.filterMode = FilterMode.Point;
         // Set wrap mode to clamp to prevent colors bleeding over to opposite edges
         texture.wrapMode = TextureWrapMode.Clamp;
+
+        // Set data that can be accessed for putting it in the log file
+        logData["distractorCount"] = distractorCount.ToString();
+        logData["distractorChance"] = chance.ToString();
 
         return texture;
 

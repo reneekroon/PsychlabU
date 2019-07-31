@@ -12,5 +12,8 @@ public abstract class Experiment
 
     public abstract Texture2D GetNextTexture();
 
+    // Used to get data from experiment to log file 
+    public Dictionary<string, string> logData;
+
 
 }

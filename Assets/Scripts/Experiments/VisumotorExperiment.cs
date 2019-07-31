@@ -5,11 +5,11 @@ using UnityEngine;
 public class VisumotorExperiment : Experiment
 {
 
-    private List<Texture2D> images = new List<Texture2D>();
-    private int imagesIterator = 0;
+    private Object[] images;
     private int chance;
     private List<Texture2D> usedImages = new List<Texture2D>();
     private List<int> directions = new List<int>();
+    private List<int> numbers = new List<int>();
 
 
     public VisumotorExperiment() {
@@ -19,6 +19,11 @@ public class VisumotorExperiment : Experiment
         // correctAnswer - 1 right
         // correctAnswer - 2 top
         // correctAnswer - 3 bottom
+
+        // Set up sending data about experiment to log file
+        logData = new Dictionary<string, string>();
+        logData.Add("imageName", "");
+        logData.Add("isGuide", "");
 
         chance = PlayerPrefs.GetInt("visumotor_chance");
 
@@ -30,17 +35,12 @@ public class VisumotorExperiment : Experiment
     void Start()
     {
 
-        // Making a list on numbers from 0 to 49 because I don't know how to do it
-        List<int> numbers = new List<int>();
-        for (int i = 0; i < 50; i++) {
-            numbers.Add(i);
-        }
+        // Loading all images from the "Images" folder
+        images = Resources.LoadAll("Images");
 
-        // Importing (loading) all 50 images in a random order, so no need to shuffle them later
-        for (int i = 0; i < 50; i++) {
-            int importable = numbers[Random.Range(0, numbers.Count)];
-            numbers.Remove(importable);
-            images.Add((Texture2D)Resources.Load("Images/test-" + importable));
+        // Struggling with shuffling the images
+        for (int i = 0; i < images.Length; i++) {
+            numbers.Add(i);
         }
     }
 
@@ -54,18 +54,22 @@ public class VisumotorExperiment : Experiment
                 
                 // Return random image that appeared already
                 int randomIndex = Random.Range(0, usedImages.Count);
+                Texture2D randomImage = usedImages[randomIndex];
+                logData["imageName"] = randomImage.name;
+                logData["isGuide"] = "false";
                 correctAnswer = directions[randomIndex];
 
                 // No special feature this time
                 specialButtonFeatureCode = 0;
-
-                return usedImages[randomIndex];
+                
+                return randomImage;
             }
         }
 
-        // Otherwise pick the next image
-        Texture2D pickedImage = images[imagesIterator];
-        imagesIterator++;
+        // Otherwise pick the next image (picking by random index)
+        int randomImageIndex = numbers[Random.Range(0, numbers.Count)];
+        numbers.Remove(randomImageIndex);
+        Texture2D pickedImage = (Texture2D)images[randomImageIndex];
 
         // Pick a random direction
         int randomDirection = Random.Range(0, 4);
@@ -77,6 +81,8 @@ public class VisumotorExperiment : Experiment
         // Special feature - makes one button (direction selected) green and the others red 
         specialButtonFeatureCode = 100 + randomDirection;
 
+        logData["imageName"] = pickedImage.name;
+        logData["isGuide"] = "true";
         correctAnswer = randomDirection;
 
         return pickedImage;

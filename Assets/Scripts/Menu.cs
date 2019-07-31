@@ -46,9 +46,11 @@ public class Menu : MonoBehaviour
                     // Use this value when parsing int failed 
                     search_chance = 65; 
                 }
+                bool search_random = searchOptions.transform.Find("SearchRandomToggle").GetComponent<Toggle>().isOn;
 
                 PlayerPrefs.SetInt("search_mode", search_mode);
                 PlayerPrefs.SetInt("search_chance", search_chance);
+                PlayerPrefs.SetInt("search_random", search_random ? 1 : 0);
 
                 break;
             case 1:
@@ -112,7 +114,7 @@ public class Menu : MonoBehaviour
         visumotorOptions = transform.Find("RightMenu").Find("VisumotorOptions").gameObject;
         trackingOptions = transform.Find("RightMenu").Find("TrackingOptions").gameObject;
 
-        // When returning from FPSRoom the cursor has to be enabled again //TODO this should be tested for VR
+        // When returning from FPSRoom the cursor has to be enabled again
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
@@ -154,6 +156,7 @@ public class Menu : MonoBehaviour
             case 0:
                 searchOptions.transform.Find("SearchDropdown").GetComponent<TMPro.TMP_Dropdown>().value = PlayerPrefs.GetInt("search_mode");
                 searchOptions.transform.Find("SearchInputField").GetComponent<TMPro.TMP_InputField>().text = PlayerPrefs.GetInt("search_chance").ToString();
+                searchOptions.transform.Find("SearchRandomToggle").GetComponent<Toggle>().isOn = PlayerPrefs.GetInt("search_random") == 1;
                 searchOptions.SetActive(true);
                 break;
             case 1:
