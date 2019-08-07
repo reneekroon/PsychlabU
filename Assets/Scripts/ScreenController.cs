@@ -75,7 +75,8 @@ public class ScreenController : MonoBehaviour
         useTimer = PlayerPrefs.GetInt("limit") == 0;
 
         // Get the animation length for the animated experiment
-        animationLength = PlayerPrefs.GetInt("tracking_length");
+        // also it has to be + 1 for the extra second the circles don't move in at the start
+        animationLength = PlayerPrefs.GetInt("tracking_length") + 1;
 
         // Decode the dropdown selection number to experiment name
         string[] experimentNames = {"search", "recognition", "visumotor", "tracking"};

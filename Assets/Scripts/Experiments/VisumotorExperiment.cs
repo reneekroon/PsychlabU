@@ -21,7 +21,6 @@ public class VisumotorExperiment : Experiment
         // correctAnswer - 3 bottom
 
         // Set up sending data about experiment to log file
-        logData = new Dictionary<string, string>();
         logData.Add("imageName", "");
         logData.Add("isGuide", "");
 
@@ -59,7 +58,6 @@ public class VisumotorExperiment : Experiment
                 logData["isGuide"] = "false";
                 correctAnswer = directions[randomIndex];
 
-                // No special feature this time
                 specialButtonFeatureCode = 0;
                 
                 return randomImage;

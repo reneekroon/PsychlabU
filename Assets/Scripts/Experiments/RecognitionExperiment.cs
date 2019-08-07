@@ -17,11 +17,7 @@ public class RecognitionExperiment : Experiment
         // correctAnswer - 0 if image is new (left button)
         // correctAnswer - 1 if image already appeared before (right button)
 
-        // No special button feature
-        specialButtonFeatureCode = 0;
-
         // Set up sending data about experiment to log file
-        logData = new Dictionary<string, string>();
         logData.Add("imageName", "");
 
         chance = PlayerPrefs.GetInt("recognition_chance");

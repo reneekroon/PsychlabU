@@ -15,11 +15,7 @@ public class ObjectTrackingExperiment : Experiment
         // correctAnswer - 1 if generated image contains target shape with target color (right button)
         // target shape is the first element in shapes list (similarily for target color)
 
-        // No special button feature
-        specialButtonFeatureCode = 0;
-
         // Set up sending data about experiment to log file
-        logData = new Dictionary<string, string>();
         logData.Add("circleCount", "");
 
         circles = _circles;

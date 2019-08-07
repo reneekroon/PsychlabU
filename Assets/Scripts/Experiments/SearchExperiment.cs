@@ -26,12 +26,8 @@ public class SearchExperiment : Experiment
         random = PlayerPrefs.GetInt("search_random");
 
         // Set up sending data about experiment to log file
-        logData = new Dictionary<string, string>();
         logData.Add("distractorCount", "");
         logData.Add("distractorChance", "");
-
-        // No special button feature
-        specialButtonFeatureCode = 0;
        
         Start();
 

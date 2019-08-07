@@ -95,7 +95,7 @@ public class MovingCircle : MonoBehaviour
         moving = true;
 
         // Stop moving after a designated amount of seconds
-        Invoke("StopMoving", duration - 1);
+        Invoke("StopMoving", duration);
 
     }
 
