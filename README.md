@@ -4,3 +4,5 @@ Unity Application for running psychophysics experiments in virtual reality (or w
 Includes assets from "Standard Assets" and "Oculus Integrations" asset packs.
 
 Application was developed for my bachelor's thesis. 
+
+The licence is attached to the thesis 
